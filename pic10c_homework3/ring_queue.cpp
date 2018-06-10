@@ -55,19 +55,21 @@ public:
 
 
 	public:
+		//Dereferencing operator (*)
 		reference operator*() {
 			// Replace the line(s) below with your code.
 			return parent->buffer[(parent->begin_index + offset)% capacity];
 		}
 
-		//Incrementing
+		//Pre-incrementing 
 		iterator& operator++() {
 			++(offset);
 			return *this;
 		}
 
+		//Post-incrementing
 		iterator operator++(int unused) {
-			iterator copy(*this);
+			iterator copy(*this); //creating a copy of original
 			++(*this);
 			return copy;
 		}
@@ -85,31 +87,58 @@ public:
 
 	};
 
+//CONST_ITERATOR CLASS WITH MEMBER FUNCTIONS/OPERATION OVERLOADS
 
-
-	/**
 	class const_iterator{
-	private:
-	RingQueue* parent;
-	int offset;
 
-	private:
-	// Only RingQueue objects can create const_iterators...
-	const_iterator() ;
+		private:
+		RingQueue* parent;
+		int offset;
 
-	public:
-	// ... however, const_iterators can be 'copied'.
-	const_iterator( const const_iterator& ) ;
+		// It is quite common for Containers and their iterators
+		// to be friends. After all, they should work closely together.
+		friend class RingQueue<ItemType, capacity>;
 
-	friend class RingQueue<ItemType, capacity>;
+		public:
+		// Main iterator constructor
+		const_iterator(RingQueue* _parent, int _offset = 0): parent(_parent), offset(_offset) { }
+
+		//Dereferencing operator (*)
+		reference operator*() {
+		// Replace the line(s) below with your code.
+		return parent->buffer[(parent->begin_index + offset)% capacity];
+		}
+
+		//Pre-incrementing
+		const_iterator& operator++() {
+		++(offset);
+		return *this;
+		}
+
+		//Post-incrementing 
+		const_iterator operator++(int unused) {
+		const_iterator copy(*this); //creating a copy of original
+		++(*this);
+		return copy;
+		}
+
+		//Comparison operator (==)
+		bool operator==(const const_iterator& rhs) const {
+		//Both offset and parent must be equal in order for them to be completely equal
+		return (rhs.offset() == offset() && rhs.parent() == parent());
+		}
+
+		//Comparison operator (!=)
+		bool operator!=(const const_iterator& rhs) const {
+		//Either the offset or the parent must be equal in order for them to be unequal
+		return (!(*this == rhs));
+		}
+
 	};
-	*/
-
-
 
 	// Friendship goes both ways here.
 	friend class iterator;
-	// friend class const_iterator;  // not implemented... yet.
+	friend class const_iterator; 
 
 
 
@@ -132,7 +161,7 @@ private:
 	// of the RingQueue
 	int end_index() const {
 		// Replace the line(s) below with your code.
-		return begin_index;
+		return ((begin_index + ring_size) % capacity);
 	}
 
 
