@@ -161,7 +161,7 @@ private:
 	// of the RingQueue
 	int end_index() const {
 		// Replace the line(s) below with your code.
-		return begin_index;
+		return ((begin_index + ring_size) % capacity);
 	}
 
 
