@@ -56,8 +56,7 @@ public:
 
 	public:
 		//Dereferencing operator (*)
-		reference operator*() {
-			// Replace the line(s) below with your code.
+		ItemType& operator*() {
 			return parent->buffer[(parent->begin_index + offset)% capacity];
 		}
 
@@ -77,7 +76,7 @@ public:
 		//Comparison operator (==) 
 		bool operator==(const iterator& rhs) const {
 			//Both the offset and parent must be equal in order for them to be completely equal
-			return (rhs.offset() == offset() && rhs.parent() == parent());
+			return ((rhs.offset == offset) && (rhs.parent == parent));
 		}
 		//Comparison operator (!=)
 		bool operator!=(const iterator& rhs) const {
@@ -104,8 +103,7 @@ public:
 		const_iterator(RingQueue* _parent, int _offset = 0): parent(_parent), offset(_offset) { }
 
 		//Dereferencing operator (*)
-		reference operator*() {
-		// Replace the line(s) below with your code.
+		ItemType& operator*() {
 		return parent->buffer[(parent->begin_index + offset)% capacity];
 		}
 
@@ -125,7 +123,7 @@ public:
 		//Comparison operator (==)
 		bool operator==(const const_iterator& rhs) const {
 		//Both offset and parent must be equal in order for them to be completely equal
-		return (rhs.offset() == offset() && rhs.parent() == parent());
+		return (rhs.offset == offset && rhs.parent == parent);
 		}
 
 		//Comparison operator (!=)
@@ -213,18 +211,23 @@ public:
 
 	// Functions that return iterators
 	iterator begin() {
-		// Replace the line(s) below with your code.
-		return iterator(this, 0);
+		return iterator(this, 0); //offset must be 0 in order to retrieve first element
 	}
 	iterator end() {
-		// Replace the line(s) below with your code.
-		return iterator(this, 0);
+		return iterator(this, ring_size); //offset must be the size of the queue 
 	}
+
+	//// Functions that return const_iterators
+	//const_iterator begin() {
+	//	return const_iterator(this, 0); //offset must be 0 in order to retrieve first element
+	//}
+	//const_iterator end() {
+	//	return const_iterator(this, ring_size); //offset must be the size of the queue 
+	//}
 
 	// Miscellaneous functions
 	size_t size() const {
-		// Replace the line(s) below with your code.
-		return 0;
+		return ring_size;
 	}
 
 	// Debugging functions
@@ -241,24 +244,18 @@ public:
 int main() {
 	RingQueue<int, 7> rq;
 
-	for (int i = 0; i < 8; ++i) {
-		rq.push_back(i);
-	}
+	rq.dump_queue(); //this current dump_queue is being weird
 
-	std::cout << "Queue size: " << rq.size() << std::endl;
+	for (int i = 0; i < 8; ++i)
+		rq.push_back(i + 1);
 
-	//rq.dump_queue();
-
-	//for (int i = 0; i < 8; ++i)
-	//	rq.push_back(i + 1);
-
-	//rq.dump_queue();
+	rq.dump_queue();
 	//rq.pop_front();
 
 	//std::cout << "Queue via size: \n";
 
 	//// RingQueue<int,7>::iterator it = rq.begin() ; 
-	//auto it = rq.begin();
+	auto it = rq.begin();
 	//for (size_t i = 0; i < rq.size(); ++i) {
 	//	std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
 	//	++it;
@@ -268,16 +265,16 @@ int main() {
 
 
 	// Uncomment the block below only when you have a working 
-	// implementation of RingQueue<ItemType,int>::end(). 
+	//implementation of RingQueue<ItemType,int>::end(). 
 	// If the implementation is not correct, it might result in 
 	// an infinite loop.
-	/**
+	
 	std::cout << "Queue via iterators: \n";
 	for ( auto it = rq.begin() ; it != rq.end() ; ++it ) {
 	std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
 	}
 	std::cout << '\n';
-	*/
+	
 
 
 
