@@ -174,23 +174,20 @@ public:
     // Accessors. Note: 'back()' is not considered part of the array.
     ItemType front() const {
         if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
-        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        // Feel free to throw instead...
-        else {
 
-        }
+//        else {
+            return buffer[begin_index];
+//        }
 
         // Replace the line(s) below with your code.
-        return buffer[0];
+ //       return buffer[0];
     }
     ItemType back() const {
         if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
-        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        // Feel free to throw instead...
 
-
-        // Replace the line(s) below with your code.
-        return buffer[0];
+        else {
+            return buffer[((begin_index + ring_size) % capacity)-1];
+        }
     }
 
 
@@ -201,6 +198,7 @@ public:
         if (ring_size == capacity) {
             //push to the beginning of ring
             buffer[begin_index] = value;
+            ++(begin_index); //moves the beginning index if there is an overlap of elements
         }
         else {
             //push to the end of ring and increase ring size
@@ -262,7 +260,14 @@ int main() {
         rq.push_back(i + 1);
 
     rq.dump_queue();
+
+    std::cout << rq.front() << std::endl; //should be 2
+    std::cout << rq.back() << std::endl; //should be 8
+
     rq.pop_front();
+
+    rq.dump_queue();
+
 
     //std::cout << "Queue via size: \n";
 
@@ -287,7 +292,8 @@ int main() {
     }
     std::cout << '\n';
 
-
+    std::cout << rq.front() << std::endl; //should be 3
+    std::cout << rq.back() << std::endl; //should be 8
 
 
     //rq.dump_queue();
