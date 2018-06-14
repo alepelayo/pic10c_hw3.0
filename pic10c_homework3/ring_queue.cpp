@@ -194,14 +194,15 @@ public:
             ++(ring_size);
         }
     }
-    //Allows user to remove the first element/beginning element from the queue
+
+    //Allows user to remove the first element of the current queue
     void pop_front() {
         if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
 
         else {
                 --ring_size;
             if(begin_index == (capacity-1)) {  //if the starting index is at the end
-                begin_index = buffer[0];
+                begin_index = buffer[0]; //set the starting index to the beginning
 
             }
             else {
@@ -220,20 +221,20 @@ public:
         return iterator(this, ring_size); //offset must be the size of the queue
     }
 
-    //// Functions that return const_iterators
-    //const_iterator begin() {
-    //	return const_iterator(this, 0); //offset must be 0 in order to retrieve first element
-    //}
-    //const_iterator end() {
-    //	return const_iterator(this, ring_size); //offset must be the size of the queue
-    //}
+    // Functions that return const_iterators
+    const_iterator begin() const {
+        return const_iterator(this, 0); //offset must be 0 in order to retrieve first element
+    }
+    const_iterator end() const {
+        return const_iterator(this, ring_size); //offset must be the size of the queue
+    }
 
     // Miscellaneous functions
     size_t size() const {
         return ring_size;
     }
 
-    // Debugging functions
+    //Ouputs the capacity of the queue, not the actual queue (what the user is modifying)
     void dump_queue() const {
         std::cout << "Raw queue...\n";
         for (size_t i = 0; i < capacity; ++i)
@@ -245,7 +246,6 @@ public:
 };
 
 int main() {
-<<<<<<< HEAD
     RingQueue<int,7> rq;
     rq.dump_queue();
 
@@ -254,31 +254,10 @@ int main() {
     }
     rq.dump_queue();
     rq.pop_front();
-=======
-	RingQueue<int, 7> rq;
-
-	rq.dump_queue();
-
-	for (int i = 0; i < 8; ++i)
-		rq.push_back(i + 1);
-
-	rq.dump_queue();
-	rq.pop_front();
-
-	std::cout << "Queue via size: \n";
-
-	// RingQueue<int,7>::iterator it = rq.begin() ; 
-	auto it = rq.begin();
-	for (size_t i = 0; i < rq.size(); ++i) {
-		std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
-		++it;
-	}
-	std::cout << '\n';
->>>>>>> master
 
     std::cout << "Queue via size: \n";
 
-    // RingQueue<int,7>::iterator it = rq.begin() ;
+    //RingQueue<int,7>:: iterator it = rq.begin() ;
     auto it = rq.begin();
     for ( size_t i = 0 ; i < rq.size() ; ++i ) {
         std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
@@ -294,14 +273,57 @@ int main() {
     rq.dump_queue();
 
 
-<<<<<<< HEAD
-    //rq.dump_queue();
-=======
-	rq.dump_queue();
->>>>>>> master
-
     std::cin.get();
     std::cin.get();
 
     return 0;
 }
+
+
+/*
+Ouput:
+
+ * Raw queue...
+Val: 0, at: 0x61fe58
+Val: 0, at: 0x61fe5c
+Val: 0, at: 0x61fe60
+Val: 0, at: 0x61fe64
+Val: 0, at: 0x61fe68
+Val: 0, at: 0x61fe6c
+Val: 0, at: 0x61fe70
+
+Raw queue...
+Val: 8, at: 0x61fe58
+Val: 2, at: 0x61fe5c
+Val: 3, at: 0x61fe60
+Val: 4, at: 0x61fe64
+Val: 5, at: 0x61fe68
+Val: 6, at: 0x61fe6c
+Val: 7, at: 0x61fe70
+
+Queue via size:
+Value: 3, address: 0x61fe60
+Value: 4, address: 0x61fe64
+Value: 5, address: 0x61fe68
+Value: 6, address: 0x61fe6c
+Value: 7, address: 0x61fe70
+Value: 8, address: 0x61fe58
+
+Queue via iterators:
+Value: 3, address: 0x61fe60
+Value: 4, address: 0x61fe64
+Value: 5, address: 0x61fe68
+Value: 6, address: 0x61fe6c
+Value: 7, address: 0x61fe70
+Value: 8, address: 0x61fe58
+
+Raw queue...
+Val: 8, at: 0x61fe58
+Val: 2, at: 0x61fe5c
+Val: 3, at: 0x61fe60
+Val: 4, at: 0x61fe64
+Val: 5, at: 0x61fe68
+Val: 6, at: 0x61fe6c
+Val: 7, at: 0x61fe70
+
+*/
