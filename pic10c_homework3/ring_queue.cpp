@@ -155,18 +155,20 @@ private:
 
 public:
     // Constructor
-    RingQueue() : begin_index(0), ring_size(0) { }
+    RingQueue() : begin_index(0), ring_size(0) {
+        for(size_t i = 0; i < capacity; ++i) {
+            buffer[i] = ItemType();
+        }
+    }
 
     // Accessors. Note: 'back()' is not considered part of the array.
     ItemType front() const {
         if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
 
-//        else {
+        else {
             return buffer[begin_index];
-//        }
+        }
 
-        // Replace the line(s) below with your code.
- //       return buffer[0];
     }
     ItemType back() const {
         if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
@@ -192,16 +194,21 @@ public:
             ++(ring_size);
         }
     }
-    //NEW STUFF
-    void pop_front() { //added this
-        if(ring_size==0) {
-            std::cout << "You cannot pop_front an empty queue!" << std::endl;
-        }
+    //Allows user to remove the first element/beginning element from the queue
+    void pop_front() {
+        if (ring_size == 0) std::cerr << "Warning: Empty ring!\n";
+
         else {
+                --ring_size;
+            if(begin_index == (capacity-1)) {  //if the starting index is at the end
+                begin_index = buffer[0];
+
+            }
+            else {
+                ++begin_index; //moves the beginning index one to the right
+            }
 
         }
-        --ring_size;
-        ++begin_index;
 
     }
 
@@ -238,48 +245,31 @@ public:
 };
 
 int main() {
-    RingQueue<int, 7> rq;
-
-    rq.dump_queue(); //this current dump_queue is being weird
-
-    for (int i = 0; i < 8; ++i)
-        rq.push_back(i + 1);
-
+    RingQueue<int,7> rq;
     rq.dump_queue();
 
-    std::cout << rq.front() << std::endl; //should be 2
-    std::cout << rq.back() << std::endl; //should be 8
-
+    for ( int i = 0 ; i < 8 ; ++i ){
+        rq.push_back(i+1);
+    }
+    rq.dump_queue();
     rq.pop_front();
 
-    rq.dump_queue();
+    std::cout << "Queue via size: \n";
 
-
-    //std::cout << "Queue via size: \n";
-
-    RingQueue<int,7>::iterator it = rq.begin() ;
-    //auto it = rq.begin();
-//    for (size_t i = 0; i < rq.size(); ++i) {
-//        std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
-//        ++it;
-//    }
-//    std::cout << '\n';
-
-
-
-    // Uncomment the block below only when you have a working
-    //implementation of RingQueue<ItemType,int>::end().
-    // If the implementation is not correct, it might result in
-    // an infinite loop.
-
-    std::cout << "Queue via iterators: \n";
-    for ( auto it = rq.begin() ; it != rq.end() ; ++it ) {
-    std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
+    // RingQueue<int,7>::iterator it = rq.begin() ;
+    auto it = rq.begin();
+    for ( size_t i = 0 ; i < rq.size() ; ++i ) {
+        std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
+        ++it;
     }
-    std::cout << '\n';
 
-    std::cout << rq.front() << std::endl; //should be 3
-    std::cout << rq.back() << std::endl; //should be 8
+     std::cout << '\n' << "Queue via iterators: \n";
+     for ( auto it = rq.begin() ; it != rq.end() ; ++it ) {
+     std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
+     }
+     std::cout << '\n';
+
+    rq.dump_queue();
 
 
     //rq.dump_queue();
