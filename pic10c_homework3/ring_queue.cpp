@@ -245,6 +245,7 @@ public:
 };
 
 int main() {
+<<<<<<< HEAD
     RingQueue<int,7> rq;
     rq.dump_queue();
 
@@ -253,6 +254,27 @@ int main() {
     }
     rq.dump_queue();
     rq.pop_front();
+=======
+	RingQueue<int, 7> rq;
+
+	rq.dump_queue();
+
+	for (int i = 0; i < 8; ++i)
+		rq.push_back(i + 1);
+
+	rq.dump_queue();
+	rq.pop_front();
+
+	std::cout << "Queue via size: \n";
+
+	// RingQueue<int,7>::iterator it = rq.begin() ; 
+	auto it = rq.begin();
+	for (size_t i = 0; i < rq.size(); ++i) {
+		std::cout << "Value: " << *it << ", address: " << &(*it) << '\n';
+		++it;
+	}
+	std::cout << '\n';
+>>>>>>> master
 
     std::cout << "Queue via size: \n";
 
@@ -272,7 +294,11 @@ int main() {
     rq.dump_queue();
 
 
+<<<<<<< HEAD
     //rq.dump_queue();
+=======
+	rq.dump_queue();
+>>>>>>> master
 
     std::cin.get();
     std::cin.get();
